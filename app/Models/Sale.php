@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Sale extends Model
 {
+    use HasFactory;
     function saleDetail()
     {
         return $this->hasMany(SaleDetail::class);
@@ -22,4 +23,14 @@ class Sale extends Model
             ->withPivot(['quantity', 'unit_price', 'subtotal'])
             ->withTimestamps();
     }
+  protected $fillable =[
+    
+        'customer_id',
+        'user_id',
+        'total',
+        'payment_method',
+        'notes',
+        'sale_date',
+    ];
+
 }

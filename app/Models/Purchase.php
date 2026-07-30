@@ -3,11 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;  
 
 class Purchase extends Model
 {
+    use HasFactory;
+
+    
     function purchaseDetails()
     {
+
+    
         return $this->hasMany(PurchaseDetail::class);
     }
 
@@ -17,4 +23,12 @@ class Purchase extends Model
             ->withPivot(['quantity', 'unit_price', 'subtotal'])
             ->withTimestamps();
     }
+
+    protected $fillable = [
+        'user_id',
+        'seller_id',
+        'total',
+        'payment_method',
+        'notes',
+    ];
 }

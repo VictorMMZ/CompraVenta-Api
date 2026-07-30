@@ -3,9 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
+    use HasFactory;
+
+
+    protected $fillable = [
+        'name',
+        'brand',
+        'model',
+        'serial_number',
+        'description',
+        'purchase_price',
+        'sale_price',
+        'price',
+        'category_id',
+        'stock',
+    ];
+
+    // Relaciones...
+
     function category()
     {
         return $this->belongsTo(Category::class);
@@ -34,4 +53,6 @@ class Product extends Model
             ->withPivot(['quantity', 'unit_price', 'subtotal'])
             ->withTimestamps();
     }
+
+
 }

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PurchaseDetail extends Model
 {
+    use HasFactory;
     function purchase()
     {
         return $this->belongsTo(Purchase::class);
@@ -15,4 +17,12 @@ class PurchaseDetail extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    protected $fillable = [
+        'purchase_id',
+        'product_id',
+        'quantity',
+        'unit_price',
+        'subtotal',
+    ];
 }
