@@ -8,13 +8,15 @@ use Illuminate\Http\Request;
 
 
 class SaleController extends Controller{
-
+// devuelve todas las ventas con sus detalles
     public function index()
     {
-        $sales = Sale::with('saleDetails')->get();
+        $sales = Sale::with('saleDetails.product')->get();
         return response()->json($sales);
     }
 
+
+    // crear una nueva venta con sus detalles
     public function store(Request $request)
     {
 
@@ -65,9 +67,10 @@ class SaleController extends Controller{
 
     }
 
+    // muestra una venta {id} con sus detalles
     public function show($id)
     {
-        $sale = Sale::with('saleDetails')->find($id);
+        $sale = Sale::with('saleDetails.product')->find($id);
 
         if (!$sale) {
             return response()->json(['message' => 'Sale not found'], 404);
@@ -76,6 +79,7 @@ class SaleController extends Controller{
         return response()->json($sale);
     }
 
+    // actualizar una venta {id} con sus detalles
     public function update(Request $request, Sale $sale)
     {
 
@@ -114,8 +118,10 @@ class SaleController extends Controller{
         ]);
 }
 
+// Calcular el total de la venta sumando los subtotales de los detalles
 $total = $sale->saleDetails()->sum('subtotal');
 
+// Actualizar el total de la venta
 $sale->update([
     'total' => $total,
 ]);
