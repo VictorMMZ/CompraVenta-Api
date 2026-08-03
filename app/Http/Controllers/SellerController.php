@@ -12,20 +12,16 @@ class SellerController extends Controller
      * Registro de un nuevo vendedor
      */
 
-    public function register(Request $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'document_id' => 'required|string|size:9',
+            'document_id' => 'required|string|max:255|unique:sellers,document_id',
+            'phone' => 'nullable|integer|unique:sellers,phone',
+            'notes' => 'nullable|string',
         ]);
 
-        $seller = Seller::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'document_id' => $validated['document_id'],
-        ]);
-
+        $seller = Seller::create($validated);
 
         return response()->json([
             'message' => 'Vendedor registrado exitosamente',
@@ -75,7 +71,8 @@ class SellerController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email',
+            'phone' => 'nullable|integer|unique:sellers,phone',
+            'notes' => 'nullable|string',
         ]);
 
         $seller->update($validated);

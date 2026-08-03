@@ -10,79 +10,32 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    /**
-     * Mostrar formulario de login
-     */
-    public function showLogin()
-    {
-        return view('auth.login');
+
+    // Procesar login del usuario
+   public function login(Request $request)
+{
+    $validated = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string|min:6',
+    ]);
+
+    if (!Auth::attempt($validated)) {
+
+        return response()->json([
+            'message' => 'Las credenciales no son válidas'
+        ], 401);
+
     }
 
-    /**
-     * Mostrar formulario de registro
-     */
-    public function showRegister()
-    {
-        return view('auth.register');
-    }
+    $request->session()->regenerate();
 
-    /**
-     * Procesar login
-     */
-    public function login(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
+    return response()->json([
+        'message' => 'Login correcto',
+        'user' => Auth::user()
+    ], 200);
+}
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
-
-        if (Auth::attempt($credentials, $request->remember)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
-        }
-
-        return redirect()->back()->with('error', 'Las credenciales no son válidas')->withInput();
-    }
-
-    /**
-     * Procesar registro
-     */
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        Auth::login($user);
-        $request->session()->regenerate();
-
-        return redirect()->intended('/dashboard')->with('success', 'Registro exitoso');
-    }
-
-    /**
-     * Procesar logout
-     */
+// logout del usuario
     public function logout(Request $request)
     {
         Auth::logout();
@@ -92,28 +45,10 @@ class AuthController extends Controller
         return redirect('/')->with('success', 'Sesión cerrada correctamente');
     }
 
-    /**
-     * Obtener usuario autenticado
-     */
+   // Obtener el usuario autenticado
     public function user(Request $request)
     {
         return response()->json(Auth::user());
     }
 
-    /**
-     * Verificar si está autenticado
-     */
-    public function check()
-    {
-        if (Auth::check()) {
-            return response()->json([
-                'authenticated' => true,
-                'user' => Auth::user(),
-            ]);
-        }
-
-        return response()->json([
-            'authenticated' => false,
-        ]);
-    }
 }
