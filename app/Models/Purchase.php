@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;  
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Purchase extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     
     function purchaseDetails()
@@ -24,9 +25,14 @@ class Purchase extends Model
             ->withTimestamps();
     }
 
+    function seller()
+    {
+        return $this->belongsTo(Seller::class, 'seller_id');
+    }
+
     protected $fillable = [
         'user_id',
-        'seller_id',
+        'document_id',
         'total',
         'payment_method',
         'notes',

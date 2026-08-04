@@ -3,15 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Purchase;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Seller extends Model
 {
     use HasFactory;
 
-    function sale()
+    function purchases()
     {
-        return $this->hasMany(Sale::class);
+        return $this->hasMany(Purchase::class);
     }
 
     protected $fillable = [
