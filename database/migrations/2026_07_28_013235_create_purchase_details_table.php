@@ -14,14 +14,15 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('purchase_id')
                 ->constrained()
-                ->cascadeOnDelete();
+                ->restrictOnDelete();
             $table->foreignId('product_id')
                 ->constrained()
-                ->cascadeOnDelete();
+                ->restrictOnDelete();
             $table->timestamps();
             $table->integer('quantity');
             $table->decimal('unit_price', 10, 2);
             $table->decimal('subtotal', 10, 2);
+            $table->index('purchase_date');
         });
     }
 

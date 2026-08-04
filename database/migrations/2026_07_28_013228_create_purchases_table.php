@@ -14,14 +14,18 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
-                ->cascadeOnDelete();
-            $table->foreignId('seller_id')
-                ->constrained()
-                ->cascadeOnDelete();
+                ->restrictOnDelete();
+            $table->foreignId('document_id')
+      ->references('document_id')
+      ->on('sellers')
+      ->restrictOnDelete();
             $table->decimal('total', 10, 2);
             $table->string('payment_method');
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->date('purchase_date');
+            $table->softDeletes();
+            $table->index('purchase_date');
         });
     }
 

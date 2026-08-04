@@ -15,15 +15,16 @@ return new class extends Migration {
             $table->foreignId('customer_id')
                 ->nullable()
                 ->constrained()
-                ->cascadeOnDelete();
+                ->restrictOnDelete();
             $table->foreignId('user_id')
                 ->constrained()
-                ->cascadeOnDelete();
+                ->restrictOnDelete();
             $table->timestamps();
             $table->decimal('total', 10, 2);
             $table->string('payment_method');
             $table->text('notes')->nullable();
             $table->date('sale_date');
+            $table->index('sale_date');
         });
     }
 
