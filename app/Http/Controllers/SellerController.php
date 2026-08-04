@@ -30,20 +30,15 @@ class SellerController extends Controller
     }
 
 
-    /**
-     * Obtener todos los vendedores
-     */
+   // obtener todos los vendedores
 
     public function index()
     {
         $sellers = Seller::all();
         return response()->json($sellers, 200);
     }
-
-    /**
-     * Obtener un vendedor por documento de identidad
-     */
-
+ // obtener un vendedor por su document_id
+    
     public function show($document_id)
     {
         $seller = Seller::where('document_id', $document_id)->first();
@@ -55,10 +50,7 @@ class SellerController extends Controller
         return response()->json($seller, 200);
     }
 
-
-    /**
-     * Actualizar los datos de un vendedor segun su documento de identidad
-     */
+// actualizar un vendedor por su document_id
 
     public function update(Request $request, $document_id)
     {
@@ -83,10 +75,7 @@ class SellerController extends Controller
         ], 200);
     }
 
-    /**
-     * Eliminar un vendedor por documento de identidad
-     */
-
+  // eliminar un vendedor por su document_id
     public function destroy($document_id){
 
     $seller = Seller::where('document_id', $document_id)->first();

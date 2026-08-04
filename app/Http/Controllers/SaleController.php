@@ -11,7 +11,7 @@ class SaleController extends Controller{
 // devuelve todas las ventas con sus detalles
     public function index()
     {
-        $sales = Sale::with('saleDetails.product')->get();
+        $sales = Sale::with('saleDetails.product')->orderBy('sale_date', 'desc')->get();
         return response()->json($sales);
     }
 
@@ -30,7 +30,7 @@ class SaleController extends Controller{
             'saleDetails' => 'required|array|min:1',
             'saleDetails.*.product_id' => 'required|integer|exists:products,id',
             'saleDetails.*.quantity' => 'required|integer|min:1',
-            'saleDetails.*.unit_price' => 'required|numeric|min:0',
+            'saleDetails.*.unit_price' => 'required|numeric|min:0|decimal:2',
         ]);
 
         
@@ -91,7 +91,7 @@ class SaleController extends Controller{
             'saleDetails' => 'required|array|min:1',
             'saleDetails.*.product_id' => 'required|integer|exists:products,id',
             'saleDetails.*.quantity' => 'required|integer|min:1',
-            'saleDetails.*.unit_price' => 'required|numeric|min:0',
+            'saleDetails.*.unit_price' => 'required|numeric|min:0|decimal:2',
             'saleDetails.*.id' => 'required|integer|exists:sale_details,id',
         ]);
 

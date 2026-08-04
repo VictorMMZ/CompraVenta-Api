@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    
+    // muestra todos los productos
     public function index()
     {
         $products = Product::all();
@@ -34,7 +34,7 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
-   
+   // muestra un producto {id}
     public function show($id)
     {
         $product = Product::find($id);
@@ -46,6 +46,7 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    // actualizar un producto {id}
   
     public function update(Request $request, $id)
     {
@@ -58,7 +59,9 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
-            'price' => 'sometimes|numeric|min:0',
+            'price' => 'sometimes|numeric|min:0|decimal:2',
+            'purchase_price' => 'sometimes|numeric|min:0|decimal:2',
+            'sale_price' => 'sometimes|numeric|min:0|decimal:2',
             'stock' => 'sometimes|integer|min:0',
         ]);
 
@@ -66,7 +69,7 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
-   
+   // eliminar un producto {id}
     public function destroy($id)
     {
         $product = Product::find($id);
