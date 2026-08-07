@@ -33,6 +33,8 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        $productsOutOfStock = Product::where('stock', '=', 0)->get();
+
         return response()->json([
             'totalPurchases' => $totalPurchases,
             'totalSales' => $totalSales,
@@ -43,6 +45,7 @@ class DashboardController extends Controller
             'totalSalesToday' => $totalSalesToday,
             'totalProfitToday' => $totalProfitToday,
             'productsWithLowStock' => $productsWithLowStock,
+            'productsOutOfStock' => $productsOutOfStock,
             'lastoperations' => $lastoperations,
         ]);
     }
