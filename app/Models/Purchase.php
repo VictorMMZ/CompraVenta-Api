@@ -27,7 +27,7 @@ class Purchase extends Model
 
     function seller()
     {
-        return $this->belongsTo(Seller::class, 'seller_id');
+        return $this->belongsTo(Seller::class, 'document_id', 'document_id');
     }
 
     protected $fillable = [
@@ -36,5 +36,6 @@ class Purchase extends Model
         'total',
         'payment_method',
         'notes',
+        'purchase_date',
     ];
 }

@@ -15,10 +15,11 @@ return new class extends Migration {
             $table->foreignId('user_id')
                 ->constrained()
                 ->restrictOnDelete();
-            $table->foreignId('document_id')
-      ->references('document_id')
-      ->on('sellers')
-      ->restrictOnDelete();
+            $table->string('document_id');
+            $table->foreign('document_id')
+                ->references('document_id')
+                ->on('sellers')
+                ->restrictOnDelete();
             $table->decimal('total', 10, 2);
             $table->string('payment_method');
             $table->text('notes')->nullable();

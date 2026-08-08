@@ -21,9 +21,10 @@ public function index()
     {
         $validated = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
-            'document_id' => 'required|integer|exists:sellers,id',
+            'document_id' => 'required|string|exists:sellers,document_id',
             'payment_method' => 'required|string|max:255',
             'notes' => 'nullable|string',
+            'purchase_date' => 'required|date',
             'purchaseDetails' => 'required|array|min:1',
             'purchaseDetails.*.product_id' => 'required|integer|exists:products,id',
             'purchaseDetails.*.quantity' => 'required|integer|min:1',
@@ -32,10 +33,11 @@ public function index()
 
         $purchase = Purchase::create([
             'user_id' => $validated['user_id'],
-            'seller_id' => $validated['document_id'],
+            'document_id' => $validated['document_id'],
             'total' => 0,
             'payment_method' => $validated['payment_method'],
             'notes' => $validated['notes'] ?? null,
+            'purchase_date' => $validated['purchase_date'],
         ]);
 
         $total = 0;
