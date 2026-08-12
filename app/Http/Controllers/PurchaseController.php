@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use App\Models\PurchaseDetail;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 
 class PurchaseController extends Controller{
@@ -37,7 +38,7 @@ public function index()
             'total' => 0,
             'payment_method' => $validated['payment_method'],
             'notes' => $validated['notes'] ?? null,
-            'purchase_date' => $validated['purchase_date'],
+            'purchase_date' => now(), // Asegurarse de que la fecha esté en el formato correcto
         ]);
 
         $total = 0;
@@ -52,8 +53,9 @@ public function index()
                 'unit_price' => $detail['unit_price'],
                 'subtotal' => $subtotal,
             ]);
-
-            $total += $subtotal;
+              Product::where('id', $detail['product_id'])
+              ->increment('stock', $detail['quantity']);
+             $total += $subtotal;
         }
 
         $purchase->update(['total' => $total]);

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use Illuminate\Http\Request;
-
+use App\Models\Product;
 
 class SaleController extends Controller{
 // devuelve todas las ventas con sus detalles
@@ -58,9 +58,12 @@ class SaleController extends Controller{
                 'subtotal' => $subtotal,
             ]);
 
+             Product::where('id', $detail['product_id'])
+             ->decrement('stock', $detail['quantity']);
             $total += $subtotal;
+            
         }
-
+       
         $sale->update(['total' => $total]);
 
         return response()->json($sale, 201);
